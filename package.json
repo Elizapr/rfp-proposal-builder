@@ -20,6 +20,7 @@
     "@mantine/hooks": "^7.12.1",
     "@mantine/modals": "^7.12.1",
     "@mantine/nprogress": "^7.12.1",
+    "axios": "^1.7.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",

@@ -35,6 +35,8 @@ export default function Login() {
 
             console.log(response);
             if (response.status === 200) {
+                sessionStorage.setItem("user_id", response.data.user_id);
+                sessionStorage.setItem("isLoggedIn", true);
                 navigate('/employee');
             }
         } catch (error) {

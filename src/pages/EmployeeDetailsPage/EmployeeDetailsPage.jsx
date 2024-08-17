@@ -4,92 +4,106 @@ import { faUserEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import classes from './EmployeeDetailsPage.module.scss'
 import { Link } from 'react-router-dom';
 import CompanyDetails from '../../components/CompanyDetails/CompanyDetails';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { data } from '../../utility/testData';
+import { useNavigate } from 'react-router-dom';
 
-const data = [
-    {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png',
-        name: 'Robert Wolfkisser',
-        job: 'Engineer',
-        experience: '1',
-        phone: '+44 (452) 886 09 12',
-    },
-    {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
-        name: 'Jill Jailbreaker',
-        job: 'Engineer',
-        experience: '3',
-        phone: '+44 (934) 777 12 76',
-    },
-    {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
-        name: 'Henry Silkeater',
-        job: 'Developer',
-        experience: '3',
-        phone: '+44 (901) 384 88 34',
-    },
-    {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png',
-        name: 'Bill Horsefighter',
-        job: 'Designer',
-        experience: '2',
-        phone: '+44 (667) 341 45 22',
-    },
-    {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png',
-        name: 'Jeremy Footviewer',
-        job: 'Manager',
-        experience: '5',
-        phone: '+44 (881) 245 65 65',
-    },
-];
 const jobColors = {
     engineer: 'blue',
     manager: 'cyan',
     designer: 'pink',
     developer: 'orange',
+    dataanalyst: 'grape',
+    businessanalyst: 'lime',
+    datascientist: 'yellow',
+    qa: 'green',
+    seniorarchitect: 'red',
+    marketing: 'purple',
+    seniorsoftwareengineer: 'indigo',
+    systemadministrator: 'teal',
+    computertechnician: 'violet',
+    other: 'gray',
 };
-
-
 export default function EmployeeDetailsPage() {
-    const rows = data.map((item) => (
-        <Table.Tr key={item.name}>
+    const [company, setCompany] = useState([]);
+    const [employeeList, setEmployeeList] = useState([]);
+    const navigate = useNavigate();
+    const onChangeList = (company) => {
+        setCompany(company);
+    }
+    const getEmployees = async (company_id) => {
+        try {
+            const url = `${import.meta.env.VITE_API_URL}/employee/${company_id}/employees`
+            const response = await axios.get(url);
+            setEmployeeList(response.data);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                form.setErrors({
+                    email: error.response.data.email || '',
+                    password: error.response.data.password || '',
+                });
+            } else {
+                console.log("error", error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        getEmployees(company.id);
+    }, [company.id, employeeList]);
+
+    const deleteEmployee = async (id) => {
+        try {
+            const url = `${import.meta.env.VITE_API_URL}/employee/${id}`;
+            const response = await axios.delete(url);
+            getEmployees(company.id);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                form.setErrors({
+                    email: error.response.data.email || '',
+                    password: error.response.data.password || '',
+                });
+            } else {
+                console.log("error", error);
+            }
+        }
+    }
+    const rows = employeeList.map((item) => (
+        <Table.Tr key={item.full_name}>
             <Table.Td>
                 <Group gap="sm">
                     <Avatar size={30} src={item.avatar} radius={30} />
                     <Text fz="sm" fw={500}>
-                        {item.name}
+                        {item.full_name}
                     </Text>
                 </Group>
             </Table.Td>
 
             <Table.Td>
-                <Badge color={jobColors[item.job.toLowerCase()]} variant="light">
-                    {item.job}
+                <Badge color={jobColors[item.job_title.toLowerCase().replace(/\s/g, '')]} variant="light">
+                    {item.job_title}
                 </Badge>
             </Table.Td>
-            <Table.Td>
+            <Table.Td align='center'>
                 <Anchor component="button" size="sm">
-                    {item.experience}
+                    {item.experience_years}
                 </Anchor>
             </Table.Td>
             <Table.Td>
                 <Group gap={10} justify="flex-end">
-                    <ActionIcon variant="subtle" color="gray">
+                    <ActionIcon variant="subtle" color="gray"
+                        onClick={() => { navigate(`/employee/${company.id}/edit/${item.id}`) }}>
                         <FontAwesomeIcon icon={faUserEdit} style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red">
+                    <ActionIcon variant="subtle" color="red"
+                        onClick={() => { deleteEmployee(item.id) }}>
                         <FontAwesomeIcon icon={faTrashCan} style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
             </Table.Td>
         </Table.Tr>
     ));
-
     const emptyRows = (
         <Table.Tr>
             <Table.Td colSpan={5}>
@@ -100,9 +114,10 @@ export default function EmployeeDetailsPage() {
         </Table.Tr>
     );
 
+
     return (
         <Container mx="auto">
-            <CompanyDetails />
+            <CompanyDetails company={company} onChangeList={onChangeList} />
             <Group mt="xl" gap={30}>
                 <div style={{ flex: 1 }}>
                     <Text fz="h2" fw={700} style={{ lineHeight: 1 }}>
@@ -110,7 +125,7 @@ export default function EmployeeDetailsPage() {
                     </Text>
                 </div>
 
-                <Link to="/employee/add">
+                <Link to={`/employee/add/${company.id}`}>
                     <Button radius="xl" >
                         Add Employee
                     </Button>
@@ -127,7 +142,7 @@ export default function EmployeeDetailsPage() {
                             <Table.Th>Action</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
-                    <Table.Tbody>{data.length > 0 ? rows : emptyRows}</Table.Tbody>
+                    <Table.Tbody>{employeeList.length > 0 ? rows : emptyRows}</Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
         </Container>

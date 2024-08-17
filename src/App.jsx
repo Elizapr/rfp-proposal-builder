@@ -9,10 +9,24 @@ import EmployeeDetailsPage from './pages/EmployeeDetailsPage/EmployeeDetailsPage
 import AddEmployee from './components/AddEmployee/AddEmployee';
 import AddCompany from './components/AddEmployee/AddEmployee';
 import GenerateProposal from './components/GenerateProposal/GenerateProposal';
+import { createTheme, Loader } from '@mantine/core';
+import { RingLoader } from './utility/RingLoader';
+
+const theme = createTheme({
+  components: {
+    Loader: Loader.extend({
+      defaultProps: {
+        loaders: { ...Loader.defaultLoaders, ring: RingLoader },
+        type: 'ring',
+      },
+    }),
+  },
+});
+
 function App() {
 
   return (
-    <MantineProvider>
+    <MantineProvider theme={theme}>
       <BrowserRouter>
         <Header />
         <Routes>

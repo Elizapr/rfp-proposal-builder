@@ -22,10 +22,14 @@
     "@mantine/modals": "^7.12.1",
     "@mantine/nprogress": "^7.12.1",
     "axios": "^1.7.4",
+    "html-react-parser": "^5.1.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
+    "react-pdftotext": "^1.3.0",
     "react-router-dom": "^6.26.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "sass": "^1.77.8"
   },
   "devDependencies": {

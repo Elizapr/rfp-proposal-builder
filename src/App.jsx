@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage/HomePage';
 import EmployeeDetailsPage from './pages/EmployeeDetailsPage/EmployeeDetailsPage';
 import AddEmployee from './components/AddEmployee/AddEmployee';
 import AddCompany from './components/AddEmployee/AddEmployee';
+import GenerateProposal from './components/GenerateProposal/GenerateProposal';
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/employee" element={<EmployeeDetailsPage />} />
           <Route path="/employee/add/:company_id" element={<AddEmployee />} />
           <Route path="/employee/:company_id/edit/:employee_id" element={<AddEmployee />} />
+          <Route path="/generate" element={<GenerateProposal />} />
         </Routes>
         <Footer />
       </BrowserRouter>

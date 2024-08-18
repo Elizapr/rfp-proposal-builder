@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Group, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Header.module.scss';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Image } from '@mantine/core';
+import logo from '../../assets/proposalCraftLogo.png';
+import { useLocation } from 'react-router-dom';
+
 const links = [
-    { link: '/about', label: 'Features' },
     { link: '/signup', label: 'Sign Up' },
     { link: '/login', label: 'Login' },
 ];
 const logggedInlinks = [
-    { link: '/about', label: 'Features' },
-    { link: '/logut', label: 'Logout' },
+    { link: '/companyProfile', label: 'Company Profile' },
+    { link: '/logout', label: 'Logout' },
 ];
 
 export default function Header() {
@@ -21,6 +24,7 @@ export default function Header() {
     const [active, setActive] = useState(links[0].link);
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") ?? false;
     const headerLinks = isLoggedIn ? logggedInlinks : links;
+    const location = useLocation();
 
     const items = headerLinks.map((link) => (
         <Link
@@ -31,17 +35,32 @@ export default function Header() {
             onClick={(event) => {
                 event.preventDefault();
                 setActive(link.link);
-                navigate(link.link);
+                if (link.link === '/logout') {
+                    logOutEvent();
+                } else {
+                    navigate(link.link);
+                }
             }}
         >
             {link.label}
         </Link>
     ));
+    useEffect(() => {
+        setActive(location.pathname);
+    }, [location]);
+
+    const logOutEvent = () => {
+        sessionStorage.clear();
+        navigate('/');
+    };
 
     return (
         <header className={classes.header}>
             <Container size="md" className={classes.inner}>
-                <h1>RFP Proposal Builder</h1>
+                <Link to="/" >
+                    <Image src={logo} alt="Logo" style={{ width: '50px', height: '50px' }} />
+                </Link>
+                <h1 className={classes.title}>Proposal Craft</h1>
                 <Group gap={5} visibleFrom="xs">
                     {items}
                 </Group>

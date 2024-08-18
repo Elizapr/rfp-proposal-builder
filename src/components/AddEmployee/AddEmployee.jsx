@@ -39,7 +39,7 @@ export default function AddCompany() {
             }
         }
     };
-    if (location.pathname === `/employee/${params.company_id}/edit/${params.employee_id}`) {
+    if (location.pathname === `/companyProfile/${params.company_id}/edit/${params.employee_id}`) {
         useEffect(() => {
             getEmployee();
         }, []);
@@ -74,7 +74,7 @@ export default function AddCompany() {
             const response = await axios.post(url, employeeObj);
 
             if (response.status === 201) {
-                navigate('/employee');
+                navigate('/companyProfile');
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
@@ -103,7 +103,7 @@ export default function AddCompany() {
             const response = await axios.put(url, employeeObj);
 
             if (response.status === 200) {
-                navigate('/employee');
+                navigate('/companyProfile');
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
@@ -122,7 +122,7 @@ export default function AddCompany() {
         <Container mx="auto">
             <form onSubmit={form.onSubmit(
                 (values) => {
-                    if (location.pathname === `/employee/${params.company_id}/edit/${params.employee_id}`) {
+                    if (location.pathname === `/companyProfile/${params.company_id}/edit/${params.employee_id}`) {
                         updateEmployee(values);
                     } else {
                         addEmployee(values);
@@ -170,7 +170,7 @@ export default function AddCompany() {
                 <Button type="submit" className={classes.control}
                     mt="md" size="md">
                     {
-                        (location.pathname === `/employee/add/${params.company_id}`) ?
+                        (location.pathname === `/companyProfile/addEmployee/${params.company_id}`) ?
                             "Add" : "Update"
                     }
                 </Button>

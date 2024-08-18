@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function CompanyDetails({ company, onChangeList }) {
+    const user_id = sessionStorage.getItem('user_id');
     // const [companyList, setCompanyList] = useState([]);
     // const [employeeList, setEmployeeList] = useState([]);
     const navigate = useNavigate();
@@ -25,17 +26,24 @@ function CompanyDetails({ company, onChangeList }) {
 
     const getCompany = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/company`);
-            onChangeList(response.data[0]);
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                form.setErrors({
-                    email: error.response.data.email || '',
-                    password: error.response.data.password || '',
-                });
+            console.log("user_id", user_id);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/company/${user_id}`);
+            if (response.data.length === 0) {
+                onChangeList(response.data[0]);
+                return;
             } else {
-
+                onChangeList(response.data);
             }
+        } catch (error) {
+            onChangeList([]);
+            // if (error.response && error.response.status === 400) {
+            //     form.setErrors({
+            //         email: error.response.data.email || '',
+            //         password: error.response.data.password || '',
+            //     });
+            // } else {
+
+            // }
         }
     };
 
@@ -51,15 +59,23 @@ function CompanyDetails({ company, onChangeList }) {
                         Company Details
                     </Text>
                 </div>
-
-                <Link to="/company/add">
-                    <Button radius="xl" >
-                        Edit
-                    </Button>
-                </Link>
+                {
+                    company.length === 0 ?
+                        <Link to="/companyProfile/addCompany">
+                            <Button radius="xl" >
+                                Add Company Details
+                            </Button>
+                        </Link>
+                        :
+                        <Link to="/companyProfile/addCompany">
+                            <Button radius="xl" >
+                                Edit
+                            </Button>
+                        </Link>
+                }
             </Group>
-            {!company ?
-                <Text color="dimmed" align="center">
+            {company.length === 0 ?
+                <Text color="dimmed" align="center" mt="xl">
                     No Company Details added
                 </Text>
                 :

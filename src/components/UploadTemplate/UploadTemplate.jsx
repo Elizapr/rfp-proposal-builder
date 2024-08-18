@@ -9,6 +9,7 @@ import { useState } from 'react';
 import pdfToText from 'react-pdftotext';
 import axios from 'axios';
 import MarkdownRenderer from '../MarkdownRenderer/MarkdownRenderer';
+import ResponseEditor from '../ResponseEditor/ResponseEditor';
 
 export default function UploadTemplate() {
     const theme = useMantineTheme();
@@ -126,8 +127,7 @@ export default function UploadTemplate() {
                                             <Dropzone.Idle>Upload RFP Document</Dropzone.Idle>
                                         </Text>
                                         <Text ta="center" fz="sm" mt="xs" c="dimmed">
-                                            Drag&apos;n&apos;drop files here to upload. We can accept only <i>.pdf</i> files that
-                                            are less than 30mb in size.
+                                            Drag&apos;n&apos;drop files here to upload. We can accept only <i>.pdf</i> files.
                                         </Text>
                                     </Container>
                                 )}
@@ -161,12 +161,21 @@ export default function UploadTemplate() {
                 <Text>{generateResponse
                     .slice(generateResponse.indexOf('```html') + 8,
                         generateResponse.lastIndexOf('```'))}</Text> */}
-                {
+                {/* {
                     generateResponse &&
                     <MarkdownRenderer data={generateResponse
                         .slice(generateResponse.indexOf('```html') + 8,
-                            generateResponse.lastIndexOf('```'))} />}
+                            generateResponse.lastIndexOf('```'))} />} */}
+
+                <Group mt="xl" mb="xl" mx="auto">
+                    {
+                        generateResponse &&
+                        <ResponseEditor content={generateResponse.slice(generateResponse.indexOf('```html') + 8,
+                            generateResponse.lastIndexOf('```'))} />
+                    }
+                </Group>
             </div>
-        </Container>
+
+        </Container >
     );
 }

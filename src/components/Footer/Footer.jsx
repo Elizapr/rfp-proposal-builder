@@ -26,7 +26,7 @@ export default function Footer() {
     return (
         <div className={classes.footer}>
             <Container className={classes.inner}>
-                <p>RFP Proposal Builder</p>
+                <p>Proposal Craft</p>
                 {/* <MantineLogo size={28} /> */}
                 <Group className={classes.links}>{items}</Group>
             </Container>

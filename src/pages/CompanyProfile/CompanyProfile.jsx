@@ -1,7 +1,7 @@
 import { Container, Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Button } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import classes from './EmployeeDetailsPage.module.scss'
+import classes from './CompanyProfile.module.scss'
 import { Link } from 'react-router-dom';
 import CompanyDetails from '../../components/CompanyDetails/CompanyDetails';
 import { useState, useEffect } from 'react';
@@ -25,7 +25,7 @@ const jobColors = {
     computertechnician: 'violet',
     other: 'gray',
 };
-export default function EmployeeDetailsPage() {
+export default function CompanyProfile() {
     const [company, setCompany] = useState([]);
     const [employeeList, setEmployeeList] = useState([]);
     const navigate = useNavigate();
@@ -93,7 +93,7 @@ export default function EmployeeDetailsPage() {
             <Table.Td>
                 <Group gap={10} justify="flex-end">
                     <ActionIcon variant="subtle" color="gray"
-                        onClick={() => { navigate(`/employee/${company.id}/edit/${item.id}`) }}>
+                        onClick={() => { navigate(`/companyProfile/${company.id}/edit/${item.id}`) }}>
                         <FontAwesomeIcon icon={faUserEdit} style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                     <ActionIcon variant="subtle" color="red"
@@ -125,7 +125,7 @@ export default function EmployeeDetailsPage() {
                     </Text>
                 </div>
 
-                <Link to={`/employee/add/${company.id}`}>
+                <Link to={`/companyProfile/addEmployee/${company.id}`}>
                     <Button radius="xl" >
                         Add Employee
                     </Button>

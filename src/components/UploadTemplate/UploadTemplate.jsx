@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Text, Group, Button, rem, useMantineTheme, Container, SimpleGrid, Center, Loader } from '@mantine/core';
+import { Switch, Text, Group, Button, rem, useMantineTheme, Container, SimpleGrid, Center, Loader } from '@mantine/core';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 // import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,7 +12,6 @@ import MarkdownRenderer from '../MarkdownRenderer/MarkdownRenderer';
 import ResponseEditor from '../ResponseEditor/ResponseEditor';
 
 export default function UploadTemplate() {
-    const theme = useMantineTheme();
     const openRef = useRef(null);
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -22,12 +21,14 @@ export default function UploadTemplate() {
     const [mdText, setMdText] = useState('');
     const [summaryLoader, setSummaryLoader] = useState(false);
     const [proposalLoader, setProposalLoader] = useState(false);
-
+    const [companyDetail, setCompanyDetail] = useState({});
+    const [switchValue, setSwitchValue] = useState(true);
     const handleDrop = (droppedFiles) => {
         setFiles(droppedFiles);
         setSelectedFile(droppedFiles[0]);
         extractText(droppedFiles[0]);
         readTemplate();
+        getCompanyDetails();
     };
 
     const extractText = (files) => {
@@ -59,7 +60,10 @@ export default function UploadTemplate() {
     const fetchResponseFromAI = async () => {
         try {
             setSummaryLoader(true);
-            const url = `${import.meta.env.VITE_API_URL}/generate/summarize`;
+            let url = "";
+            switchValue ?
+                url = `${import.meta.env.VITE_API_URL}/ollama/generate/summarize` :
+                url = `${import.meta.env.VITE_API_URL}/generate/summarize`;
             const response = await axios.post(url,
                 {
                     prompt: pdfContent,
@@ -75,11 +79,15 @@ export default function UploadTemplate() {
     const fetchProposalResponseFromAI = async () => {
         try {
             setProposalLoader(true);
-            const url = `${import.meta.env.VITE_API_URL}/generate`;
+            let url = "";
+            switchValue ?
+                url = `${import.meta.env.VITE_API_URL}/ollama/generate`
+                : url = `${import.meta.env.VITE_API_URL}/generate`;
             const response = await axios.post(url,
                 {
                     prompt: pdfSummary,
                     template: mdText,
+                    companyDetail: companyDetail
                 });
             setGenerateResponse(response.data);
             setProposalLoader(false);
@@ -87,6 +95,17 @@ export default function UploadTemplate() {
             console.error(error);
         }
     };
+
+    const getCompanyDetails = async () => {
+        try {
+            const url = `${import.meta.env.VITE_API_URL}/company/${sessionStorage.getItem('user_id')}`;
+            const response = await axios.get(url);
+            setCompanyDetail(response.data);
+            return;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <Container mx="auto">
@@ -139,6 +158,22 @@ export default function UploadTemplate() {
                 </Button>
             </div >
             <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <Center mt="xl">
+                    <Switch size="xl" color="teal" defaultChecked onLabel="OLLAMA" offLabel="GOOGLE GEMINI"
+                        onChange={(event) => {
+                            setSwitchValue(event.target.checked);
+                            setGenerateResponse(null);
+                            setPdfSummary(null);
+                        }}
+                    />
+                </Center>
+                <Center mt="sm">
+                    <Text fz="sm" c="dimmed" align="center">
+                        OLLAMA (basic) or GOOGLE GEMINI<br />
+                        {switchValue ?
+                            "OLLAMA: Slow response time, less good response, data not sent to third party" :
+                            "GOOGLE GEMINI: Fast response time, good response, data sent to third party"}</Text>
+                </Center>
                 <Center mt="xl">{
                     pdfSummary ?
                         <FontAwesomeIcon icon={faCircleCheck} style={{ color: 'green', width: rem(50), height: rem(50) }} />

@@ -1,4 +1,4 @@
-import { Container, Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Button } from '@mantine/core';
+import { Container, Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Button, Center } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import classes from './CompanyProfile.module.scss'
@@ -117,6 +117,22 @@ export default function CompanyProfile() {
 
     return (
         <Container mx="auto">
+            <Center mt="xl">
+                <Button
+                    variant="gradient"
+                    gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+                    align="center"
+                    onClick={() => {
+                        company
+                            &&
+                            employeeList.length > 0
+                            &&
+                            navigate(`/generate`);
+                    }}
+                >
+                    Genearte Proposal
+                </Button>
+            </Center>
             <CompanyDetails company={company} onChangeList={onChangeList} />
             <Group mt="xl" gap={30}>
                 <div style={{ flex: 1 }}>

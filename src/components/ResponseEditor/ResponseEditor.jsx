@@ -30,7 +30,7 @@ export default function ResponseEditor({ content }) {
 
     return (
         <RichTextEditor editor={editor}>
-            <RichTextEditor.Toolbar sticky stickyOffset={60}>
+            <RichTextEditor.Toolbar sticky stickyOffset={160}>
                 <RichTextEditor.ControlsGroup>
                     <RichTextEditor.Bold />
                     <RichTextEditor.Italic />

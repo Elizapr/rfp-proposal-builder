@@ -20,7 +20,6 @@ export default function AddCompany() {
             console.log(url);
             const response = await axios.get(url);
             setEmployeeData(response.data);
-            console.log(response.data);
             form.values.full_name = response.data.full_name;
             form.values.job_title = response.data.job_title;
             form.values.skills = response.data.skills;

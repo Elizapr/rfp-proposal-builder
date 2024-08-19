@@ -34,6 +34,7 @@ function App() {
           <Route path="/signup" element={<HomePage />} />
           <Route path="/login" element={<HomePage />} />
           <Route path="/companyProfile/addCompany" element={<AddCompany />} />
+          <Route path="/companyProfile/editCompany/:company_id" element={<AddCompany />} />
           <Route path="/companyProfile" element={<CompanyProfile />} />
           <Route path="/companyProfile/addEmployee/:company_id" element={<AddEmployee />} />
           <Route path="/companyProfile/:company_id/edit/:employee_id" element={<AddEmployee />} />

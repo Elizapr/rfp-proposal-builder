@@ -4,13 +4,18 @@ import { Link } from 'react-router-dom';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function AddCompany() {
-    const params = useParams();
+    const user_id = sessionStorage.getItem('user_id');
+    const location = useLocation();
     const navigate = useNavigate();
+    const params = useParams();
+    const companyId = params.company_id;
+
     const [responseError, setResponseError] = useState('');
+    const [companyData, setCompanyData] = useState([]);
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -34,6 +39,33 @@ export default function AddCompany() {
         },
     });
 
+    const getCompany = async () => {
+        try {
+            console.log(companyId);
+            const url = `${import.meta.env.VITE_API_URL}/company/${user_id}`
+            const response = await axios.get(url);
+            setCompanyData(response.data);
+            form.values.name = response.data.name;
+            form.values.industry = response.data.industry;
+            form.values.founded = response.data.founded;
+            form.values.city = response.data.city;
+            form.values.state = response.data.state;
+            form.values.country = response.data.country;
+            form.values.background = response.data.background;
+            setResponseError('');
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                setResponseError(error.response.data.message);
+            } else {
+                setResponseError(error.message);
+            }
+        }
+    };
+    if (location.pathname === `/companyProfile/editCompany/${companyId}`) {
+        useEffect(() => {
+            getCompany();
+        }, []);
+    }
     const addCompany = async (values) => {
         setResponseError('');
         try {
@@ -56,7 +88,6 @@ export default function AddCompany() {
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                console.log(error.response.data);
                 setResponseError(error.response.data.message);
                 // Server-side error
                 // form.setErrors({
@@ -65,7 +96,40 @@ export default function AddCompany() {
                 // });
             } else {
                 console.error('Error:', error.message);
+                setResponseError(error.message);
+            }
+        }
+    };
+    const updateCompany = async (values) => {
+        setResponseError('');
+        try {
+            const companyObj = {
+                name: values.name,
+                industry: values.industry,
+                founded: values.founded,
+                city: values.city,
+                state: values.state,
+                country: values.country,
+                background: values.background,
+                user_id: sessionStorage.getItem('user_id'),
+            }
+            const url = `${import.meta.env.VITE_API_URL}/company/${companyId}/update`;
+            const response = await axios.put(url, companyObj);
+
+            if (response.status === 200) {
+                navigate('/companyProfile');
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
                 setResponseError(error.response.data.message);
+                // Server-side error
+                // form.setErrors({
+                //     name: error.response.data.full_name || '',
+                //     industry: error.response.data.job_title || ''
+                // });
+            } else {
+                console.error('Error:', error.message);
+                setResponseError(error.message);
             }
         }
     };
@@ -74,11 +138,11 @@ export default function AddCompany() {
             <form className={classes.addCompanyForm}
                 onSubmit={form.onSubmit(
                     (values) => {
-                        // if (location.pathname === `/companyProfile/${params.company_id}/editCompany`) {
-                        //     updateCompany(values);
-                        // } else {
-                        addCompany(values);
-                        // }
+                        if (location.pathname === `/companyProfile/editCompany/${companyId}`) {
+                            updateCompany(values);
+                        } else {
+                            addCompany(values);
+                        }
                     })}
             >
                 <TextInput
@@ -165,7 +229,10 @@ export default function AddCompany() {
 
                 <Button mt="md" size="md"
                     type="submit">
-                    Add
+                    {
+                        (location.pathname === `/companyProfile/addCompany`) ?
+                            "Add" : "Update"
+                    }
                 </Button>
             </form>
             {responseError &&

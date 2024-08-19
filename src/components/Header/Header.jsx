@@ -6,7 +6,7 @@ import classes from './Header.module.scss';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Image } from '@mantine/core';
-import logo from '../../assets/proposalCraftLogo.png';
+import logo from '../../assets/logo.svg';
 import { useLocation } from 'react-router-dom';
 
 const links = [

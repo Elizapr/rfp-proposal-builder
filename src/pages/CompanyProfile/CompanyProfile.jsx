@@ -1,6 +1,6 @@
-import { Container, Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Button, Center } from '@mantine/core';
+import { Blockquote, Container, Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Button, Center } from '@mantine/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faUserEdit, faTrashCan, faInfo } from '@fortawesome/free-solid-svg-icons'
 import classes from './CompanyProfile.module.scss'
 import { Link } from 'react-router-dom';
 import CompanyDetails from '../../components/CompanyDetails/CompanyDetails';
@@ -28,9 +28,11 @@ const jobColors = {
 export default function CompanyProfile() {
     const [company, setCompany] = useState([]);
     const [employeeList, setEmployeeList] = useState([]);
+    const [companyId, setCompanyId] = useState(0);
     const navigate = useNavigate();
     const onChangeList = (company) => {
         setCompany(company);
+        company && setCompanyId(company.id);
     }
     const getEmployees = async (company_id) => {
         try {
@@ -50,14 +52,14 @@ export default function CompanyProfile() {
     };
 
     useEffect(() => {
-        getEmployees(company.id);
-    }, [company.id, employeeList]);
+        company && getEmployees(company.id);
+    }, [company, employeeList]);
 
     const deleteEmployee = async (id) => {
         try {
             const url = `${import.meta.env.VITE_API_URL}/employee/${id}`;
             const response = await axios.delete(url);
-            getEmployees(company.id);
+            company && getEmployees(companyId);
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 form.setErrors({
@@ -93,7 +95,7 @@ export default function CompanyProfile() {
             <Table.Td>
                 <Group gap={10} justify="flex-end">
                     <ActionIcon variant="subtle" color="gray"
-                        onClick={() => { navigate(`/companyProfile/${company.id}/edit/${item.id}`) }}>
+                        onClick={() => { navigate(`/companyProfile/${company ? companyId : ''}/edit/${item.id}`) }}>
                         <FontAwesomeIcon icon={faUserEdit} style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                     <ActionIcon variant="subtle" color="red"
@@ -107,13 +109,14 @@ export default function CompanyProfile() {
     const emptyRows = (
         <Table.Tr>
             <Table.Td colSpan={5}>
-                <Text color="dimmed" align="center">
-                    No Employee Added
-                </Text>
+                <Blockquote color="blue" icon={<FontAwesomeIcon icon={faInfo} />} mt="xl">
+                    <Text align="center">
+                        No Employee Added
+                    </Text>
+                </Blockquote>
             </Table.Td>
         </Table.Tr>
     );
-
 
     return (
         <Container mx="auto">
@@ -130,7 +133,7 @@ export default function CompanyProfile() {
                             navigate(`/generate`);
                     }}
                 >
-                    Genearte Proposal
+                    Generate Proposal
                 </Button>
             </Center>
             <CompanyDetails company={company} onChangeList={onChangeList} />
@@ -141,7 +144,7 @@ export default function CompanyProfile() {
                     </Text>
                 </div>
 
-                <Link to={`/companyProfile/addEmployee/${company.id}`}>
+                <Link to={`/companyProfile/addEmployee/${company ? companyId : ''}`}>
                     <Button radius="xl" >
                         Add Employee
                     </Button>

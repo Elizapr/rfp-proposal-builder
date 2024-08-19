@@ -11,7 +11,7 @@ import axios from 'axios';
 import MarkdownRenderer from '../MarkdownRenderer/MarkdownRenderer';
 import ResponseEditor from '../ResponseEditor/ResponseEditor';
 
-export default function UploadTemplate() {
+export default function UploadTemplate({ handleActiveStep, handleNextStep }) {
     const openRef = useRef(null);
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -29,6 +29,7 @@ export default function UploadTemplate() {
         extractText(droppedFiles[0]);
         readTemplate();
         getCompanyDetails();
+        handleNextStep();
     };
 
     const extractText = (files) => {
@@ -70,6 +71,7 @@ export default function UploadTemplate() {
                 });
             setPdfSummary(response.data);
             setSummaryLoader(false);
+            handleNextStep();
             console.log("summary", response.data);
         } catch (error) {
             console.error(error);
@@ -91,6 +93,7 @@ export default function UploadTemplate() {
                 });
             setGenerateResponse(response.data);
             setProposalLoader(false);
+            handleNextStep();
         } catch (error) {
             console.error(error);
         }
@@ -108,7 +111,7 @@ export default function UploadTemplate() {
     }
 
     return (
-        <Container mx="auto">
+        <Container>
             <div className={classes.wrapper}>
                 <Dropzone
                     openRef={openRef}

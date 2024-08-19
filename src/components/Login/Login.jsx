@@ -37,7 +37,7 @@ export default function Login() {
             if (response.status === 200) {
                 sessionStorage.setItem("user_id", response.data.user_id);
                 sessionStorage.setItem("isLoggedIn", true);
-                navigate('/companyProfile');
+                navigate('/');
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {

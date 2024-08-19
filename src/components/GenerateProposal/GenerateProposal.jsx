@@ -1,5 +1,5 @@
 import React from 'react'
-import UploadTemplate from '../UploadTemplate/UploadTemplate'
+import UploadAndGenerateProposal from '../UploadAndGenerateProposal/UploadAndGenerateProposal'
 import ProposalStepper from '../ProposalStepper/ProposalStepper'
 import { Container, Space } from '@mantine/core'
 import { useState } from 'react';
@@ -18,7 +18,7 @@ function GenerateProposal() {
         <Container mx="auto">
             <ProposalStepper active={active} />
             <Space h="100px" />
-            <UploadTemplate
+            <UploadAndGenerateProposal
                 handleActiveStep={handleActiveStep}
                 handleNextStep={handleNextStep} />
         </Container>

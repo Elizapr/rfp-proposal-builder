@@ -1,12 +1,9 @@
 .wrapper {
-    // position: relative;
-    // margin-bottom: rem(30px);
     margin-top: 80px;
 }
 
 .dropzone {
     border-width: rem(1px);
-    // padding-bottom: rem(50px);
 }
 
 .icon {
@@ -14,26 +11,21 @@
 }
 
 .control {
-    // position: absolute;
     width: rem(250px);
     left: calc(50% - rem(125px));
     margin-top: rem(16px);
-    // bottom: rem(-20px);
 }
 
 .controlSummarize {
-    // position: absolute;
     width: rem(250px);
     left: calc(50% - rem(125px));
     margin-top: rem(16px);
-    // bottom: rem(-100px);
 }
 
 .controlGenerate {
     width: rem(250px);
     left: calc(50% - rem(125px));
     margin-top: rem(16px);
-    // bottom: rem(-100px);
 }
 
 .fa {

@@ -25,6 +25,7 @@ export default function Header() {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") ?? false;
     const headerLinks = isLoggedIn ? logggedInlinks : links;
     const location = useLocation();
+    const headerClass = location.pathname === '/generate' ? classes.headerFixed : classes.header;
 
     const items = headerLinks.map((link) => (
         <Link
@@ -55,7 +56,7 @@ export default function Header() {
     };
 
     return (
-        <header className={classes.header}>
+        <header className={headerClass}>
             <Container size="md" className={classes.inner}>
                 <Link to="/" >
                     <Image src={logo} alt="Logo" style={{ width: '50px', height: '50px' }} />

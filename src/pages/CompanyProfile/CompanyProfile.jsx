@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { data } from '../../utility/testData';
 import { useNavigate } from 'react-router-dom';
+import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import { useDisclosure } from '@mantine/hooks';
 
 const jobColors = {
     engineer: 'blue',
@@ -30,6 +32,9 @@ export default function CompanyProfile() {
     const [employeeList, setEmployeeList] = useState([]);
     const [companyId, setCompanyId] = useState(0);
     const navigate = useNavigate();
+    const [opened, { open, close }] = useDisclosure(false);
+    const [toDeleteId, setToDeleteId] = useState(0);
+
     const onChangeList = (company) => {
         setCompany(company);
         company && setCompanyId(company.id);
@@ -99,7 +104,7 @@ export default function CompanyProfile() {
                         <FontAwesomeIcon icon={faUserEdit} style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                     <ActionIcon variant="subtle" color="red"
-                        onClick={() => { deleteEmployee(item.id) }}>
+                        onClick={() => { setToDeleteId(item.id); open(); }}>
                         <FontAwesomeIcon icon={faTrashCan} style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -120,6 +125,13 @@ export default function CompanyProfile() {
 
     return (
         <Container mx="auto">
+            <AlertMessage opened={opened} close={close}
+                message="Are you sure you want to delete this employee?"
+                buttonText="Delete Employee"
+                buttonAction={() => {
+                    deleteEmployee(toDeleteId);
+                    close();
+                }} />
             <Center mt="xl">
                 <Button
                     variant="gradient"

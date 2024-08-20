@@ -51,12 +51,18 @@ Technologies
 - Upload pdf and generate proposal Page
 
 ### Mockups
+#### Home Page
+<img width="1280" alt="homePage" src="https://github.com/user-attachments/assets/0cd6f78e-12a6-4941-b27b-7096aff85cc5">
 
-(In progress...)
+#### Login Page
+<img width="1280" alt="login" src="https://github.com/user-attachments/assets/8408622c-4948-4f98-9575-266544f85883">
+
+#### Generate Proposal Page
+<img width="1280" alt="generateProposal" src="https://github.com/user-attachments/assets/967c6c61-20e3-496c-a2ce-484f66e95669">
 
 ### Data
 
-![ER Diagram for the database structure](https://github.com/user-attachments/assets/e93bfe0a-f169-4389-8321-3713fb892722)
+![ER Diagram for the database structure](https://github.com/user-attachments/assets/8355abbd-8eae-4066-a9a2-f6be17d9619e)
 
 ### Endpoints
 

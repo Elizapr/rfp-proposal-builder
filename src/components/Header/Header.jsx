@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Container, Group, Burger, Collapse, Text, Popover, Menu, MenuItem } from '@mantine/core';
+import { Container, Group, Burger, Text, Popover, Menu, MenuItem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-// import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Header.module.scss';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -75,11 +74,6 @@ export default function Header() {
                 <Group gap={5} visibleFrom="xs">
                     {items}
                 </Group>
-
-                {/* <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-                {!collapsed && <Container className={classes.headerCollapse} in={opened}>
-                    <Text mt="sm" className={classes.headerCollapse}>{items}</Text>
-                </Container>} */}
 
                 <Popover width='100%' position="bottom" withArrow
                     shadow="md" opened={opened}

@@ -1,8 +1,8 @@
-import { Switch, Text, Center, rem } from '@mantine/core';
+import { Switch, Text, Center } from '@mantine/core';
 import { useMantineTheme } from '@mantine/core';
 import classes from './ToggleAI.module.scss'
 
-function ToggleAI({ switchValue, onSwitchToggled }) {
+function ToggleAI({ switchValue, onSwitchToggled, handleActiveStep }) {
     const theme = useMantineTheme();
     const ollamaText =
         <Text className={classes.switchLabel} fw={600} c='white'>
@@ -21,6 +21,7 @@ function ToggleAI({ switchValue, onSwitchToggled }) {
                 <Switch size="xl" onLabel={ollamaText} offLabel={googleGeminiText}
                     onChange={(event) => {
                         onSwitchToggled(event);
+                        handleActiveStep(1);
                     }}
                 />
             </Center>

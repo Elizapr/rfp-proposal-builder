@@ -25,6 +25,10 @@
     background-size: cover;
     background-position: center;
     flex: 1;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        display: none;
+    }
 }
 
 
@@ -43,4 +47,8 @@
 
 .formLogin {
     flex: 1;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        width: 100%;
+    }
 }

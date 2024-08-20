@@ -51,7 +51,7 @@ export default function CompanyProfile() {
                     password: error.response.data.password || '',
                 });
             } else {
-                console.log("error", error);
+                console.log("Error at getEmployees:", error);
             }
         }
     };
@@ -72,7 +72,7 @@ export default function CompanyProfile() {
                     password: error.response.data.password || '',
                 });
             } else {
-                console.log("error", error);
+                console.log("Error at deleteEmployee:", error);
             }
         }
     }

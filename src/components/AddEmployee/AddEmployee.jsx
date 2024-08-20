@@ -1,4 +1,4 @@
-import { Button, Container, TextInput } from '@mantine/core';
+import { Button, Container, Textarea, TextInput } from '@mantine/core';
 import classes from './AddEmployee.module.scss';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,6 @@ export default function AddCompany() {
     const getEmployee = async () => {
         try {
             const url = `${import.meta.env.VITE_API_URL}/employee/${params.employee_id}`
-            console.log(url);
             const response = await axios.get(url);
             setEmployeeData(response.data);
             form.values.full_name = response.data.full_name;
@@ -27,8 +26,6 @@ export default function AddCompany() {
 
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                console.log(error.response.data);
-                // Server-side error
                 form.setErrors({
                     full_name: error.response.data.full_name || '',
                     job_title: error.response.data.job_title || ''
@@ -77,8 +74,6 @@ export default function AddCompany() {
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                console.log(error.response.data);
-                // Server-side error
                 form.setErrors({
                     full_name: error.response.data.full_name || '',
                     job_title: error.response.data.job_title || ''
@@ -106,8 +101,6 @@ export default function AddCompany() {
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                console.log(error.response.data);
-                // Server-side error
                 form.setErrors({
                     full_name: error.response.data.full_name || '',
                     job_title: error.response.data.job_title || ''
@@ -128,7 +121,10 @@ export default function AddCompany() {
                     }
                 }
             )} className={classes.addEmployeeForm}>
-                <h2 className={classes.title}>Add Employee</h2>
+                <h2 className={classes.title}>
+                    {location.pathname === `/companyProfile/${params.company_id}/edit/${params.employee_id}` ?
+                        "Edit Employee" : "Add Employee"}
+                </h2>
                 <TextInput
                     withAsterisk
                     label="Full Name"
@@ -147,18 +143,22 @@ export default function AddCompany() {
                     {...form.getInputProps('job_title')}
                 />
 
-                <TextInput
+                <Textarea
                     withAsterisk
                     mt="md"
                     label="Skills"
                     placeholder="Works done in the company"
                     classNames={classes}
+                    autosize
+                    minRows={2}
+                    maxRows={4}
                     key={form.key('skills')}
                     {...form.getInputProps('skills')}
                 />
                 <TextInput
                     withAsterisk
                     mt="md"
+                    type='number'
                     label="Years of Experience"
                     placeholder="Example: 2"
                     classNames={classes}

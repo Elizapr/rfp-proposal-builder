@@ -1,5 +1,4 @@
 import { Container, Group, Anchor, ActionIcon, rem, Text } from '@mantine/core';
-// import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Footer.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';

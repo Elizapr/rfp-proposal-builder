@@ -1,6 +1,5 @@
-import { Button, Collapse, Paper, PasswordInput, TextInput, Container, rem } from '@mantine/core';
+import { Button, Collapse, Paper, PasswordInput, TextInput, Container } from '@mantine/core';
 import classes from './SignUp.module.scss';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm } from '@mantine/form';
@@ -41,18 +40,12 @@ export default function SignUp() {
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                // Server-side error
                 form.setErrors({
                     email: error.response.data.email || '',
                     password: error.response.data.password || '',
                 });
             } else {
-                // showNotification({
-                //     title: 'Error',
-                //     message: 'An unexpected error occurred. Please try again.',
-                //     color: 'red',
-                // });
-                // console.error('Error:', error.message);
+                console.error('Error on create accoutn:', error.message);
             }
         }
     };
@@ -116,12 +109,9 @@ export default function SignUp() {
                         error={form.errors.contact}
                     />
 
-                    {/* <Link to="/"
-                        className={classes.control}> */}
                     <Button type="submit" mt="md" size="md">
                         Create Account
                     </Button>
-                    {/* </Link> */}
                 </form>
             </Container>
         </Collapse>

@@ -25,6 +25,10 @@
     background-size: cover;
     background-position: center;
     flex: 1;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        display: none;
+    }
 }
 
 
@@ -38,9 +42,14 @@
 
     @media (max-width: $mantine-breakpoint-xs) {
         flex-direction: column;
+        gap: rem(0px);
     }
 }
 
 .signup {
     flex: 1;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        width: 100%;
+    }
 }

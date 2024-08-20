@@ -11,7 +11,7 @@ import FileDropZone from '../FileDropZone/FileDropZone';
 import AlertMessage from '../AlertMessage/AlertMessage';
 import { useDisclosure } from '@mantine/hooks';
 
-export default function UploadAndGenerateProposal({ handleNextStep }) {
+export default function UploadAndGenerateProposal({ handleActiveStep, handleNextStep }) {
     const [alertOpened, { open, close }] = useDisclosure(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [files, setFiles] = useState([]);
@@ -68,7 +68,6 @@ export default function UploadAndGenerateProposal({ handleNextStep }) {
             setPdfSummary(response.data);
             setSummaryLoader(false);
             handleNextStep();
-            console.log("summary", response.data);
         } catch (error) {
             console.error(error);
         }
@@ -121,7 +120,7 @@ export default function UploadAndGenerateProposal({ handleNextStep }) {
                 <FileDropZone handleDrop={handleDrop} selectedFile={selectedFile} />
 
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <ToggleAI switchValue={switchValue} onSwitchToggled={onSwitchToggled} />
+                    <ToggleAI switchValue={switchValue} onSwitchToggled={onSwitchToggled} handleActiveStep={handleActiveStep} />
 
                     <Center mt="xl">{
                         pdfSummary ?

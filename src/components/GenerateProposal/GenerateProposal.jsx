@@ -8,8 +8,8 @@ function GenerateProposal() {
     const [active, setActive] = useState(0);
     const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
 
-    const handleActiveStep = () => {
-        setActive(0);
+    const handleActiveStep = (step) => {
+        step ? setActive(step) : setActive(0);
     }
     const handleNextStep = () => {
         nextStep();

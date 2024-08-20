@@ -1,4 +1,4 @@
-# RFP Proposal Builder
+# Proposal Craft
 
 ## Overview
 
@@ -10,7 +10,7 @@ This app will be useful for proposal writers because they don't have to write pr
 
 ### User Profile
 
-Companies who want to bid on released Government contracts or Government Grants.
+Companies who want to bid on released Government contracts.
 
 ### Features
 
@@ -32,12 +32,12 @@ Technologies
 - Mantine UI for styling
 - FontAwesomeIcon for icons
 - npm react-pdftotext for converting pdf to string.
-- DIVING DEEPER: Deployment to AWS/Azure/GCP
 
 ### APIs
 
 - Google Gemini LLM api to generate proposal. To rerun this package, first you need to obtain a GOOGLE API KEY from the link below:
-[Google Gemini Key Creating Page](https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faistudio.google.com%2Fapp%2Fapikey&followup=https%3A%2F%2Faistudio.google.com%2Fapp%2Fapikey&ifkv=Ab5oB3qdXYtlo-gkXqkoy4knfWkg5bMwmdARI1emibLghlyVLklLFwQyxnIK1naDIAem-2flyvj25A&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-669309505%3A1724112150559400&ddm=0)
+
+    [Google Gemini Key Creating Page](https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faistudio.google.com%2Fapp%2Fapikey&followup=https%3A%2F%2Faistudio.google.com%2Fapp%2Fapikey&ifkv=Ab5oB3qdXYtlo-gkXqkoy4knfWkg5bMwmdARI1emibLghlyVLklLFwQyxnIK1naDIAem-2flyvj25A&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-669309505%3A1724112150559400&ddm=0)
 
 - Alternatively, you can use OLLAMA (llama3.1) as a local LLM to generate the proposal. The app allows a toogle switch to choose between OLLAMA and GOOGLE GEMINI.
 
@@ -60,7 +60,20 @@ Technologies
 
 ### Endpoints
 
-(In progress...)
+- http://localhost:PORT/user => get/post/put
+- http://localhost:PORT/user/:id => delete
+- http://localhost:PORT/user/login => post (for login)
+- http://localhost:PORT/employee/ => post
+- http://localhost:PORT/employee/:company_id/employees => get
+- http://localhost:PORT/employee/:id => get/put/delete
+- http://localhost:PORT/company/ => get/post
+- http://localhost:PORT/company/:company_id/update => put
+- http://localhost:PORT/company/:user_id => get
+- http://localhost:PORT/company/:user_id/companyAndEmployees => get
+- http://localhost:PORT/generate/ => post
+- http://localhost:PORT/generate/summarize => post
+- http://localhost:PORT/ollama/generate/ => post
+- http://localhost:PORT/ollama/generate/summarize => post
 
 ### Auth
 
@@ -71,10 +84,11 @@ Technologies
 - Make basic project with all the minimum requirements.
 - Create/Test apis.
 - Add company detail page.
+- Add employee detail page.
 - Add upload pdf and generate proposal pages.
-- Add sign up/login pages
+- Add sign-up/login pages
 
 ## Nice-to-haves
-
+- DIVING DEEPER: Authentication using JWT Token system
 - DIVING DEEPER: Deployment to AWS/Azure/GCP
 - DIVING DEEPER: Stripe api for payment handling

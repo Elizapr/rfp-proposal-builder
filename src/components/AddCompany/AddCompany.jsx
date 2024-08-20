@@ -41,7 +41,6 @@ export default function AddCompany() {
 
     const getCompany = async () => {
         try {
-            console.log(companyId);
             const url = `${import.meta.env.VITE_API_URL}/company/${user_id}`
             const response = await axios.get(url);
             setCompanyData(response.data);
@@ -79,7 +78,6 @@ export default function AddCompany() {
                 background: values.background,
                 user_id: sessionStorage.getItem('user_id'),
             }
-            console.log(companyObj);
             const url = `${import.meta.env.VITE_API_URL}/company`;
             const response = await axios.post(url, companyObj);
 
@@ -89,11 +87,6 @@ export default function AddCompany() {
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 setResponseError(error.response.data.message);
-                // Server-side error
-                // form.setErrors({
-                //     name: error.response.data.full_name || '',
-                //     industry: error.response.data.job_title || ''
-                // });
             } else {
                 console.error('Error:', error.message);
                 setResponseError(error.message);
@@ -122,11 +115,6 @@ export default function AddCompany() {
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 setResponseError(error.response.data.message);
-                // Server-side error
-                // form.setErrors({
-                //     name: error.response.data.full_name || '',
-                //     industry: error.response.data.job_title || ''
-                // });
             } else {
                 console.error('Error:', error.message);
                 setResponseError(error.message);
@@ -145,6 +133,10 @@ export default function AddCompany() {
                         }
                     })}
             >
+                <h2 className={classes.title}>
+                    {location.pathname === `/companyProfile/editCompany/${companyId}` ?
+                        "Edit Company" : "Add Company"}
+                </h2>
                 <TextInput
                     withAsterisk
                     label="Company Name"
@@ -215,17 +207,6 @@ export default function AddCompany() {
                     key={form.key('background')}
                     {...form.getInputProps('background')}
                 />
-
-                {/* <Select
-                mt="md"
-                comboboxProps={{ withinPortal: true }}
-                data={['React', 'Angular', 'Svelte', 'Vue']}
-                placeholder="Pick one"
-                label="Your favorite library/framework"
-                classNames={classes}
-            /> */}
-
-
 
                 <Button mt="md" size="md"
                     type="submit">

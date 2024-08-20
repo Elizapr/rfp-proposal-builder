@@ -1,5 +1,5 @@
 import React from 'react'
-import { Divider, Box, Container, Group, Text, Button, Blockquote, Collapse } from '@mantine/core';
+import { Divider, Box, Container, Group, Text, Button, Blockquote, Collapse, Spoiler } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -11,26 +11,9 @@ import { useDisclosure } from '@mantine/hooks';
 function CompanyDetails({ company, onChangeList }) {
     const [opened, { toggle }] = useDisclosure(true);
     const user_id = sessionStorage.getItem('user_id');
-    // const [companyList, setCompanyList] = useState([]);
-    // const [employeeList, setEmployeeList] = useState([]);
     const navigate = useNavigate();
-    const companyDetails = {
-        "company": {
-            "name": "Tech Innovations Inc.",
-            "industry": "Technology",
-            "founded": "2010-05-15",
-            "headquarters": {
-                "city": "Vancouver",
-                "state": "British Columbia",
-                "country": "Canada"
-            },
-            "background": "Tech Innovations Inc. specializes in developing cutting-edge software solutions and hardware products for businesses worldwide. With a focus on AI and machine learning, the company aims to drive technological advancements and improve operational efficiency for its clients."
-        }
-    };
-
     const getCompany = async () => {
         try {
-            console.log("user_id", user_id);
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/company/${user_id}`);
             if (response.data.length === 0) {
                 onChangeList(response.data[0]);
@@ -40,14 +23,6 @@ function CompanyDetails({ company, onChangeList }) {
             }
         } catch (error) {
             onChangeList([]);
-            // if (error.response && error.response.status === 400) {
-            //     form.setErrors({
-            //         email: error.response.data.email || '',
-            //         password: error.response.data.password || '',
-            //     });
-            // } else {
-
-            // }
         }
     };
 
@@ -109,8 +84,11 @@ function CompanyDetails({ company, onChangeList }) {
                                 {`${company?.city}, ${company?.state}, ${company?.country}`}
                             </Text>
                             <Divider my="xs" label="Background" labelPosition="left" />
-                            <Text >{`${company?.background}`}
-                            </Text>
+                            <Spoiler maxHeight={75} showLabel="Show more" hideLabel="Hide">
+                                <Text >
+                                    {`${company?.background}`}
+                                </Text>
+                            </Spoiler>
                         </Blockquote>
                     </Collapse>
                 </Container>

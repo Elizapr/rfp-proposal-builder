@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Group, Burger } from '@mantine/core';
+import { Container, Group, Burger, Collapse, Text, Popover, Menu, MenuItem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './Header.module.scss';
@@ -21,6 +21,7 @@ const logggedInlinks = [
 export default function Header() {
     const navigate = useNavigate();
     const [opened, { toggle }] = useDisclosure(false);
+    const [collapsed, setCpllapsed] = useState(true);
     const [active, setActive] = useState(links[0].link);
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") ?? false;
     const headerLinks = isLoggedIn ? logggedInlinks : links;
@@ -41,10 +42,19 @@ export default function Header() {
                 } else {
                     navigate(link.link);
                 }
+                if (opened) {
+                    toggle();
+                }
             }}
         >
             {link.label}
         </Link>
+    ));
+
+    const burgerMenu = headerLinks.map((link) => (
+        <Menu trigger='click' key={link.label}>
+            <MenuItem onClick={() => navigate(link.link)}>{link.label}</MenuItem>
+        </Menu>
     ));
     useEffect(() => {
         setActive(location.pathname);
@@ -66,8 +76,26 @@ export default function Header() {
                     {items}
                 </Group>
 
-                <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+                {/* <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+                {!collapsed && <Container className={classes.headerCollapse} in={opened}>
+                    <Text mt="sm" className={classes.headerCollapse}>{items}</Text>
+                </Container>} */}
+
+                <Popover width='100%' position="bottom" withArrow
+                    shadow="md" opened={opened}
+                    onChange={toggle}>
+                    <Popover.Target>
+                        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        <Text mt="sm" className={classes.headerCollapse}>{items}</Text>
+                    </Popover.Dropdown>
+                </Popover>
             </Container>
+
+
+
+
         </header>
     );
 }

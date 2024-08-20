@@ -61,7 +61,7 @@ export default function Header() {
                 <Link to="/" >
                     <Image src={logo} alt="Logo" style={{ width: '50px', height: '50px' }} />
                 </Link>
-                <h1 className={classes.title}>Proposal Craft</h1>
+                <h2 className={classes.title}>Proposal Craft</h2>
                 <Group gap={5} visibleFrom="xs">
                     {items}
                 </Group>
